@@ -1,0 +1,4 @@
+arr[]=[2,4,12,3,4];
+bubble_sort(arr);
+# Invalid character here
+

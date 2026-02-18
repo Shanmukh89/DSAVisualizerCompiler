@@ -1,0 +1,6 @@
+[
+  {"action": "loop_start", "details": ""},
+  {"action": "if", "details": ""},
+  {"action": "assign", "details": "swap"},
+  {"action": "loop_end", "details": ""}
+]

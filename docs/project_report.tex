@@ -1,0 +1,1289 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+
+% Page setup
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{DSA Visualizer Compiler}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    captionpos=b
+}
+
+% Define custom colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Title formatting
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{DSA Visualizer Compiler} \\ 
+       \large A Complete Pipeline for Algorithm and Data Structure Visualization}
+\author{
+    \textbf{Team 09} \\
+    \vspace{0.5em}
+    \begin{tabular}{c}
+        Akhil \\
+        Sohan \\
+        Revanth \\
+        Shanmukh
+    \end{tabular}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Project Introduction}
+
+The DSA Visualizer Compiler is a comprehensive software system that transforms a custom Domain-Specific Language (DSL) into interactive visualizations of algorithms and data structures. This project represents a complete compiler implementation using traditional compiler construction techniques, including lexical analysis, syntax parsing, semantic analysis, and code generation.
+
+\subsection{Project Overview}
+
+The compiler takes as input programs written in a simple, C-like DSL designed specifically for describing algorithm operations and data structure manipulations. The output is a multi-format visualization system that can generate:
+
+\begin{itemize}
+    \item JSON Intermediate Representation (IR) for step-by-step algorithm execution
+    \item Interactive CLI visualizations with context-aware summaries
+    \item JavaScript code compatible with Algorithm Visualizer platform
+\end{itemize}
+
+\subsection{Key Features}
+
+The system supports a comprehensive range of algorithms and data structures:
+
+\textbf{Sorting Algorithms:}
+\begin{itemize}
+    \item Bubble Sort - O(n²) comparison-based sorting
+    \item Insertion Sort - O(n²) incremental sorting
+    \item Selection Sort - O(n²) minimum-finding approach
+    \item Merge Sort - O(n log n) divide-and-conquer
+    \item Quick Sort - O(n log n) average case pivot-based sorting
+\end{itemize}
+
+\textbf{Data Structures:}
+\begin{itemize}
+    \item Stack - LIFO operations (push, pop, peek)
+    \item Queue - FIFO operations (enqueue, dequeue)
+    \item Binary Search Tree - insertion and traversals (inorder, preorder, postorder)
+    \item Graph - node/edge operations with BFS and DFS traversals
+\end{itemize}
+
+\subsection{Technical Architecture}
+
+The compiler follows a traditional multi-phase architecture:
+
+\begin{enumerate}
+    \item \textbf{Lexical Analysis} - Tokenization using Flex
+    \item \textbf{Syntax Analysis} - Parsing using Bison/Yacc
+    \item \textbf{Semantic Analysis} - Validation and type checking
+    \item \textbf{Code Generation} - IR generation and output formatting
+\end{enumerate}
+
+\section{Motivation}
+
+\subsection{Educational Need}
+
+Understanding algorithms and data structures is fundamental to computer science education, yet students often struggle with abstract concepts that are difficult to visualize. Traditional teaching methods rely on static diagrams or verbal explanations that fail to capture the dynamic nature of algorithmic processes.
+
+\subsection{Visualization Gap}
+
+While several algorithm visualization tools exist, they typically suffer from limitations:
+
+\begin{itemize}
+    \item Limited algorithm coverage
+    \item Inflexible input formats
+    \item Platform-specific implementations
+    \item Lack of step-by-step control
+    \item No support for custom data sets
+\end{itemize}
+
+\subsection{Compiler Construction Learning}
+
+This project serves dual educational purposes:
+
+\begin{enumerate}
+    \item \textbf{Algorithm Education} - Provides interactive visualizations for learning algorithms
+    \item \textbf{Compiler Education} - Demonstrates complete compiler construction from lexer to code generator
+\end{enumerate}
+
+\subsection{Multi-Platform Visualization}
+
+The need for visualization tools that can work across different platforms and contexts motivated the multi-output approach:
+
+\begin{itemize}
+    \item \textbf{CLI Visualization} - For terminal-based learning and debugging
+    \item \textbf{Web Integration} - For online platforms like Algorithm Visualizer
+    \item \textbf{JSON IR} - For integration with custom visualization tools
+\end{itemize}
+
+\section{Team Member Contributions}
+
+This project was developed collaboratively by Team 09, with each member taking responsibility for specific components of the compiler system. The following sections detail the individual contributions of each team member.
+
+\subsection{Member 1 (Akhil) – Lexical Analysis \& Algorithm Implementation}
+
+\textbf{Primary Responsibilities:} \texttt{lexer.l}, \texttt{algorithms.c}
+
+\subsubsection{Lexical Analyzer Implementation}
+
+Implemented the complete lexical analyzer (\texttt{lexer.l}) responsible for tokenizing the DSL source code:
+
+\begin{itemize}
+    \item \textbf{Token Recognition:} Developed comprehensive token recognition for keywords, identifiers, operators, and algorithmic syntax from \texttt{.algo} source files
+    \item \textbf{Algorithmic Operations:} Ensured smooth token recognition for key operations including PUSH, POP, ENQUEUE, DEQUEUE, and SORT commands
+    \item \textbf{Error Handling:} Added validation for malformed tokens to ensure robust compilation
+    \item \textbf{Line Tracking:} Implemented line and column tracking for accurate error reporting
+\end{itemize}
+
+\begin{lstlisting}[language=C, caption=Lexical Analyzer Token Recognition]
+%{
+#include "parser.tab.h"
+extern int yylineno;
+int column = 1;
+%}
+
+%%
+"bubble_sort"     { return BUBBLE_SORT; }
+"insertion_sort"  { return INSERTION_SORT; }
+"selection_sort"  { return SELECTION_SORT; }
+"merge_sort"      { return MERGE_SORT; }
+"quick_sort"      { return QUICK_SORT; }
+"push"            { return PUSH; }
+"pop"             { return POP; }
+"enqueue"         { return ENQUEUE; }
+"dequeue"         { return DEQUEUE; }
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.str = strdup(yytext); return ID; }
+[0-9]+            { yylval.num = atoi(yytext); return NUMBER; }
+\end{lstlisting}
+
+\subsubsection{Algorithm Implementation}
+
+Developed \texttt{algorithms.c} containing core algorithm and data structure implementations:
+
+\textbf{Sorting Algorithms:}
+\begin{itemize}
+    \item Bubble Sort with step-by-step comparison and swap tracking
+    \item Selection Sort with minimum element identification
+    \item Insertion Sort with incremental array building
+    \item Quick Sort with pivot-based partitioning
+    \item Merge Sort with divide-and-conquer visualization
+\end{itemize}
+
+\textbf{Data Structure Operations:}
+\begin{itemize}
+    \item \textbf{Stack:} Push/pop operations with LIFO visualization
+    \item \textbf{Queue:} Enqueue/dequeue operations with FIFO tracking
+    \item \textbf{Tree:} BST insertion and traversal (inorder, preorder, postorder)
+    \item \textbf{Graph:} BFS/DFS traversal with node visitation tracking
+\end{itemize}
+
+\textbf{Function Mapping Mechanism:} Integrated automatic linking so DSL commands like \texttt{bubble\_sort(arr)} connect to their predefined implementations.
+
+\subsubsection{Algorithm Integration}
+
+\textbf{Function Mapping and Integration:}
+\begin{itemize}
+    \item Integrated algorithm implementations with the compiler pipeline
+    \item Ensured seamless connection between lexical tokens and algorithm execution
+    \item Validated algorithm correctness and step-by-step accuracy
+    \item Coordinated with other team members for proper algorithm invocation
+\end{itemize}
+
+\subsection{Member 2 (Sohan) – Syntax and Grammar Design}
+
+\textbf{Primary Responsibilities:} \texttt{parser.y}, \texttt{ast.c}
+
+\subsubsection{Grammar Rule Definition}
+
+Defined comprehensive grammar rules for parsing \texttt{.algo} programs:
+
+\begin{itemize}
+    \item \textbf{Sorting Operations:} Grammar for bubble sort, selection sort, insertion sort, and other sorting algorithms
+    \item \textbf{Data Structure Operations:} Syntax rules for stack operations, queue operations, tree manipulations, and graph traversals
+    \item \textbf{Array Declarations:} Support for array initialization and manipulation
+    \item \textbf{Method Calls:} Grammar for data structure method invocations
+\end{itemize}
+
+\begin{lstlisting}[language=Yacc, caption=Grammar Rules for Algorithm Operations]
+algorithm_call: BUBBLE_SORT LPAREN ID RPAREN {
+    $$ = createAlgorithmCall("bubble_sort", $3);
+}
+| INSERTION_SORT LPAREN ID RPAREN {
+    $$ = createAlgorithmCall("insertion_sort", $3);
+}
+| SELECTION_SORT LPAREN ID RPAREN {
+    $$ = createAlgorithmCall("selection_sort", $3);
+}
+;
+
+method_call: ID DOT PUSH LPAREN NUMBER RPAREN {
+    $$ = createMethodCall($1, "push", createNumberNode($5));
+}
+| ID DOT POP LPAREN RPAREN {
+    $$ = createMethodCall($1, "pop", NULL);
+}
+;
+\end{lstlisting}
+
+\subsubsection{AST Construction}
+
+\textbf{Semantic Actions Integration:}
+\begin{itemize}
+    \item Connected grammar productions with semantic actions to build AST
+    \item Implemented AST node creation for algorithms like Bubble Sort, Stack operations, and Queue operations
+    \item Ensured proper AST structure for complex algorithmic sequences
+\end{itemize}
+
+\textbf{Parser Integration:}
+\begin{itemize}
+    \item Integrated parser output with lexer tokens for complete syntactic correctness
+    \item Validated algorithm definition structures to prevent ambiguous instruction sequences
+    \item Added recovery mechanism for small syntax errors to improve parser resilience
+\end{itemize}
+
+\subsection{Member 3 (Revanth) – Code Generation \& Intermediate Representation}
+
+\textbf{Primary Responsibilities:} \texttt{codegen.c}, \texttt{ir.c}
+
+\subsubsection{AST-to-IR Translation}
+
+Implemented comprehensive AST-to-IR translation system:
+
+\begin{itemize}
+    \item \textbf{Algorithm Logic Conversion:} Translated parsed algorithm logic into executable intermediate steps
+    \item \textbf{State Preservation:} Ensured accurate preservation of algorithm state transitions for visualization
+    \item \textbf{Performance Integration:} Integrated performance metrics tracking throughout code generation
+\end{itemize}
+
+\begin{lstlisting}[language=C, caption=Code Generation for Sorting Algorithms]
+void generateSortingSteps(ASTNode* node) {
+    const char* algorithm = node->data.algorithm_call.algorithm;
+    
+    if (strcmp(algorithm, "bubble_sort") == 0) {
+        generateBubbleSort(array, array_size);
+    } else if (strcmp(algorithm, "insertion_sort") == 0) {
+        generateInsertionSort(array, array_size);
+    } else if (strcmp(algorithm, "selection_sort") == 0) {
+        generateSelectionSort(array, array_size);
+    }
+    
+    // Add performance metrics
+    addPerformanceMetrics();
+}
+\end{lstlisting}
+
+\subsubsection{IR Generation Patterns}
+
+\textbf{Sorting Operations:}
+\begin{itemize}
+    \item Defined IR patterns for comparisons, swaps, and passes
+    \item Implemented step-by-step tracking of sorting progress
+    \item Added markers for sorted regions and active comparisons
+\end{itemize}
+
+\textbf{Data Structure Operations:}
+\begin{itemize}
+    \item Created IR patterns for enqueue, dequeue, push, pop operations
+    \item Tracked data structure size updates and state changes
+    \item Implemented visualization markers for front/rear pointers and stack tops
+\end{itemize}
+
+\textbf{Performance Metrics:}
+\begin{itemize}
+    \item Integrated total comparisons, swaps, and passes counting
+    \item Added data structure size updates and operation counters
+    \item Simplified code generation pipeline for scalability and debugging
+\end{itemize}
+
+\subsection{Member 4 (Shanmukh) – CLI Visualization \& JSON-to-JavaScript Conversion}
+
+\textbf{Primary Responsibilities:} \texttt{cli\_visualizer.c}, \texttt{json\_to\_js.c}
+
+\subsubsection{Command-Line Visualizer Development}
+
+Developed comprehensive CLI visualization system:
+
+\begin{itemize}
+    \item \textbf{Interactive Display:} Created command-line visualizer displaying algorithm execution steps interactively
+    \item \textbf{Context-Based Visualization:} Implemented adaptive visualization showing comparisons and swaps for sorting, and stack/queue states for data structures
+    \item \textbf{Real-Time Metrics:} Displayed live metrics including total comparisons, swaps, pushes, pops, enqueues, and dequeues
+\end{itemize}
+
+\begin{lstlisting}[language=C, caption=Context-Aware CLI Visualization]
+void displayAlgorithmStep(const char* algorithm, const char* action, 
+                         int* indices, int count) {
+    if (strstr(algorithm, "Sort") != NULL) {
+        // Sorting visualization
+        displaySortingStep(action, indices, count);
+        displayArray();
+        displaySortingMetrics();
+    } else if (strstr(algorithm, "Stack") != NULL) {
+        // Stack visualization
+        displayStackStep(action, indices, count);
+        displayStack();
+        displayStackMetrics();
+    } else if (strstr(algorithm, "Queue") != NULL) {
+        // Queue visualization
+        displayQueueStep(action, indices, count);
+        displayQueue();
+        displayQueueMetrics();
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Dynamic Element Highlighting}
+
+\textbf{Visual Enhancements:}
+\begin{itemize}
+    \item Highlighted key elements dynamically (current front/rear in queue, top of stack)
+    \item Added color coding for different operation types
+    \item Implemented progress indicators for sorting algorithms
+\end{itemize}
+
+\textbf{Automatic Adaptability:}
+\begin{itemize}
+    \item Created automatic adaptability for sorting and data structure visualizations
+    \item Implemented context switching based on algorithm type
+    \item Added responsive display formatting for different terminal sizes
+\end{itemize}
+
+\subsubsection{Performance Summaries}
+
+\textbf{Complexity Analysis:}
+\begin{itemize}
+    \item Included time and space complexity information for each algorithm
+    \item Added performance summaries with operation counts
+    \item Implemented comparative analysis between different algorithms
+\end{itemize}
+
+\textbf{Metrics Display:}
+\begin{itemize}
+    \item Real-time operation counters (comparisons, swaps, data structure operations)
+    \item Final performance statistics and algorithm efficiency metrics
+    \item Visual progress indicators and completion status
+\end{itemize}
+
+\subsubsection{JSON-to-JavaScript Conversion}
+
+\textbf{Algorithm Visualizer Integration:}
+\begin{itemize}
+    \item Designed structured JSON to JavaScript conversion system
+    \item Enabled step-by-step operation replay (swaps, comparisons, pushes, enqueues)
+    \item Generated Algorithm Visualizer-compatible JavaScript code
+    \item Implemented proper tracer calls and animation timing
+    \item Created interactive web-based visualizations from CLI output
+\end{itemize}
+
+\section{Work Done}
+
+\subsection{Compiler Infrastructure}
+
+\subsubsection{Lexical Analysis Implementation}
+
+The lexer was implemented using Flex with comprehensive token recognition:
+
+\begin{lstlisting}[language=C, caption=Key Lexer Rules]
+%{
+#include "parser.tab.h"
+extern int yylineno;
+int column = 1;
+%}
+
+%%
+"bubble_sort"     { return BUBBLE_SORT; }
+"insertion_sort"  { return INSERTION_SORT; }
+"selection_sort"  { return SELECTION_SORT; }
+"merge_sort"      { return MERGE_SORT; }
+"quick_sort"      { return QUICK_SORT; }
+"stack"           { return STACK; }
+"queue"           { return QUEUE; }
+"tree"            { return TREE; }
+"graph"           { return GRAPH; }
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.str = strdup(yytext); return ID; }
+[0-9]+            { yylval.num = atoi(yytext); return NUMBER; }
+\end{lstlisting}
+
+\subsubsection{Grammar Design and Parser Implementation}
+
+The parser uses Bison/Yacc with a carefully designed grammar supporting:
+
+\begin{lstlisting}[language=Yacc, caption=Core Grammar Rules]
+program: statement_list { root = $1; }
+       ;
+
+statement_list: statement { $$ = $1; }
+              | statement_list statement { 
+                  $$ = $1; 
+                  addStatement($$, $2); 
+                }
+              ;
+
+statement: array_decl SEMICOLON { $$ = $1; }
+         | algorithm_call SEMICOLON { $$ = $1; }
+         | method_call SEMICOLON { $$ = $1; }
+         ;
+
+array_decl: ID LBRACKET RBRACKET ASSIGN array_values {
+    $$ = createArrayDecl($1, $5);
+}
+;
+
+algorithm_call: ID LPAREN ID RPAREN {
+    $$ = createAlgorithmCall($1, $3);
+}
+;
+\end{lstlisting}
+
+\subsubsection{Abstract Syntax Tree (AST) Design}
+
+A comprehensive AST structure was designed to represent all language constructs:
+
+\begin{lstlisting}[language=C, caption=AST Node Types]
+typedef enum {
+    NODE_ARRAY_DECL,
+    NODE_ALGORITHM_CALL,
+    NODE_METHOD_CALL,
+    NODE_STATEMENT_LIST,
+    NODE_ARRAY_VALUES,
+    NODE_NUMBER,
+    NODE_IDENTIFIER
+} NodeType;
+
+typedef struct ASTNode {
+    NodeType type;
+    union {
+        struct {
+            char* name;
+            struct ASTNode* values;
+        } array_decl;
+        
+        struct {
+            char* algorithm;
+            char* array_name;
+        } algorithm_call;
+        
+        struct {
+            char* object;
+            char* method;
+            struct ASTNode* args;
+        } method_call;
+    } data;
+    
+    struct ASTNode* next;
+    int line_number;
+} ASTNode;
+\end{lstlisting}
+
+\subsection{Algorithm Implementation}
+
+\subsubsection{Sorting Algorithm Code Generation}
+
+Each sorting algorithm was implemented with faithful step-by-step generation:
+
+\textbf{Bubble Sort Implementation:}
+\begin{lstlisting}[language=C, caption=Bubble Sort IR Generation]
+void generateBubbleSort(int* arr, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        addIR("start_pass", NULL, 0);
+        
+        for (int j = 0; j < n - i - 1; j++) {
+            // Generate compare step
+            int indices[2] = {j, j + 1};
+            addIRWithIndices("compare", indices, 2);
+            
+            if (arr[j] > arr[j + 1]) {
+                // Generate swap step
+                addIRWithIndices("swap", indices, 2);
+                
+                // Perform actual swap
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            } else {
+                addIRWithIndices("no_swap", indices, 2);
+            }
+        }
+        
+        // Mark position as sorted
+        int sorted_pos = n - i - 1;
+        addIRWithIndices("mark_sorted", &sorted_pos, 1);
+    }
+}
+\end{lstlisting}
+
+\textbf{Merge Sort Implementation:}
+The merge sort implementation demonstrates recursive algorithm handling:
+
+\begin{lstlisting}[language=C, caption=Merge Sort IR Generation]
+void generateMergeSort(int* arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        // Generate divide step
+        int divide_indices[3] = {left, mid, right};
+        addIRWithIndices("divide", divide_indices, 3);
+        
+        // Recursive calls
+        generateMergeSort(arr, left, mid);
+        generateMergeSort(arr, mid + 1, right);
+        
+        // Generate merge step
+        generateMerge(arr, left, mid, right);
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Data Structure Operations}
+
+\textbf{Stack Operations:}
+\begin{lstlisting}[language=C, caption=Stack Operation IR Generation]
+void generateStackOperation(const char* operation, ASTNode* args) {
+    if (strcmp(operation, "push") == 0) {
+        int value = args->data.number.value;
+        int indices[2] = {stack_top + 1, value};
+        addIRWithIndices("push", indices, 2);
+        stack_top++;
+    } else if (strcmp(operation, "pop") == 0) {
+        if (stack_top >= 0) {
+            int indices[2] = {stack_top, stack[stack_top]};
+            addIRWithIndices("pop", indices, 2);
+            stack_top--;
+        }
+    } else if (strcmp(operation, "peek") == 0) {
+        if (stack_top >= 0) {
+            int indices[2] = {stack_top, stack[stack_top]};
+            addIRWithIndices("peek", indices, 2);
+        }
+    }
+}
+\end{lstlisting}
+
+\textbf{Binary Tree Operations:}
+\begin{lstlisting}[language=C, caption=BST Insert IR Generation]
+void generateTreeInsert(int value) {
+    TreeNode* current = tree_root;
+    TreeNode* parent = NULL;
+    
+    while (current != NULL) {
+        parent = current;
+        int indices[2] = {value, current->value};
+        addIRWithIndices("compare", indices, 2);
+        
+        if (value < current->value) {
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
+    
+    // Insert new node
+    TreeNode* new_node = createTreeNode(value);
+    if (parent == NULL) {
+        tree_root = new_node;
+        int indices[4] = {value, -1, 0, 1}; // root node
+        addIRWithIndices("insert", indices, 4);
+    } else {
+        if (value < parent->value) {
+            parent->left = new_node;
+            int indices[4] = {value, parent->value, 1, 0}; // left child
+            addIRWithIndices("insert", indices, 4);
+        } else {
+            parent->right = new_node;
+            int indices[4] = {value, parent->value, 0, 0}; // right child
+            addIRWithIndices("insert", indices, 4);
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{Visualization Systems}
+
+\subsubsection{CLI Visualizer Implementation}
+
+A context-aware CLI visualizer was developed that adapts its output based on the algorithm type:
+
+\begin{lstlisting}[language=C, caption=Context-Aware CLI Display]
+void displayStep(const char* algorithm, const char* action, 
+                 int* indices, int index_count) {
+    
+    if (strstr(algorithm, "Sort") != NULL) {
+        // Sorting algorithm visualization
+        if (strcmp(action, "compare") == 0) {
+            printf("Comparing elements at positions %d and %d: ", 
+                   indices[0], indices[1]);
+            printf("[%d] vs [%d]\n", 
+                   current_array[indices[0]], 
+                   current_array[indices[1]]);
+        } else if (strcmp(action, "swap") == 0) {
+            printf("Swapping positions %d and %d\n", 
+                   indices[0], indices[1]);
+            // Perform visual swap
+            swapElements(indices[0], indices[1]);
+        }
+        displayArray();
+        
+    } else if (strstr(algorithm, "Stack") != NULL) {
+        // Stack visualization
+        if (strcmp(action, "push") == 0) {
+            printf("Pushing %d onto stack\n", indices[1]);
+            displayStack();
+        } else if (strcmp(action, "pop") == 0) {
+            printf("Popping %d from stack\n", indices[1]);
+            displayStack();
+        }
+    }
+    // Additional data structure cases...
+}
+\end{lstlisting}
+
+\subsubsection{JavaScript Code Generation}
+
+The system generates Algorithm Visualizer-compatible JavaScript:
+
+\begin{lstlisting}[language=JavaScript, caption=Generated JavaScript Output]
+const { Array1DTracer, LogTracer, Layout, VerticalLayout, Tracer } 
+    = require('algorithm-visualizer');
+
+const array = [5, 3, 8, 2, 1];
+const tracer = new Array1DTracer('Bubble Sort');
+const log = new LogTracer('Operations Log');
+
+Layout.setRoot(new VerticalLayout([tracer, log]));
+tracer.set(array);
+Tracer.delay();
+
+// Step 1: Compare positions 0 and 1
+tracer.select(0, 1);
+log.println('Comparing elements at positions 0 and 1: [5] vs [3]');
+Tracer.delay();
+
+// Step 2: Swap elements
+tracer.swap(0, 1);
+log.println('Swapping positions 0 and 1');
+Tracer.delay();
+
+// Continue with remaining steps...
+\end{lstlisting}
+
+\subsection{Error Handling System}
+
+\subsubsection{Multi-Phase Error Detection}
+
+A comprehensive error handling system was implemented across all compiler phases:
+
+\textbf{Lexical Error Handling:}
+\begin{lstlisting}[language=C, caption=Lexical Error Detection]
+void lexical_error(char invalid_char, int line, int column) {
+    fprintf(stderr, "Lexical Error: Invalid character '%c' at line %d, column %d\n", 
+            invalid_char, line, column);
+    fprintf(stderr, "  Unexpected character encountered. ");
+    fprintf(stderr, "Valid characters include: letters, numbers, operators, and punctuation.\n");
+    exit(1);
+}
+\end{lstlisting}
+
+\textbf{Semantic Error Handling:}
+\begin{lstlisting}[language=C, caption=Algorithm Validation]
+int isValidAlgorithm(const char* algorithm) {
+    const char* valid_algorithms[] = {
+        "bubble_sort", "insertion_sort", "selection_sort", 
+        "merge_sort", "quick_sort", "quicksort", NULL
+    };
+    
+    for (int i = 0; valid_algorithms[i] != NULL; i++) {
+        if (strcmp(algorithm, valid_algorithms[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void reportAlgorithmError(const char* invalid_algorithm) {
+    fprintf(stderr, "Semantic Error: Unknown algorithm: '%s'. ", 
+            invalid_algorithm);
+    fprintf(stderr, "Valid algorithms are: bubble_sort, insertion_sort, ");
+    fprintf(stderr, "selection_sort, merge_sort, quick_sort\n");
+    
+    // Suggest corrections for common typos
+    if (levenshteinDistance(invalid_algorithm, "bubble_sort") <= 2) {
+        fprintf(stderr, "Did you mean: bubble_sort?\n");
+    }
+    
+    exit(1);
+}
+\end{lstlisting}
+
+\subsection{Testing and Validation}
+
+\subsubsection{Comprehensive Test Suite}
+
+A complete test suite was developed covering all supported features:
+
+\textbf{Algorithm Test Files:}
+\begin{itemize}
+    \item \texttt{bubble\_sort\_test.algo} - Bubble sort with various array sizes
+    \item \texttt{insertion\_sort\_test.algo} - Insertion sort validation
+    \item \texttt{selection\_sort\_test.algo} - Selection sort testing
+    \item \texttt{merge\_sort\_test.algo} - Merge sort with complex arrays
+    \item \texttt{quick\_sort\_test.algo} - Quick sort edge cases
+\end{itemize}
+
+\textbf{Data Structure Test Files:}
+\begin{itemize}
+    \item \texttt{test\_stack.algo} - Stack operations (push, pop, peek)
+    \item \texttt{test\_queue.algo} - Queue operations (enqueue, dequeue)
+    \item \texttt{test\_tree.algo} - BST insertion and traversals
+    \item \texttt{test\_graph.algo} - Graph creation and traversals
+\end{itemize}
+
+\textbf{Error Test Files:}
+\begin{itemize}
+    \item \texttt{test\_lexical\_error.algo} - Invalid character testing
+    \item \texttt{test\_syntax\_error.algo} - Grammar violation testing
+    \item \texttt{test\_error.algo} - Invalid algorithm names
+    \item \texttt{test\_error2.algo} - Invalid data structure operations
+\end{itemize}
+
+\subsection{Build System and Toolchain}
+
+\subsubsection{Cross-Platform Makefile}
+
+A comprehensive Makefile was created supporting multiple platforms:
+
+\begin{lstlisting}[language=Make, caption=Cross-Platform Build System]
+# Compiler settings
+CC = gcc
+CFLAGS = -std=c11 -Wall -Wextra -Werror
+FLEX = flex
+BISON = bison
+
+# Windows-specific settings
+ifeq ($(OS),Windows_NT)
+    FLEX = win_flex
+    BISON = win_bison
+    EXE_EXT = .exe
+    RM = del /Q
+else
+    EXE_EXT =
+    RM = rm -f
+endif
+
+# Build targets
+all: dsa_compiler$(EXE_EXT) json_to_js$(EXE_EXT) cli_visualizer$(EXE_EXT)
+
+dsa_compiler$(EXE_EXT): parser.tab.c lex.yy.c ast.c ir.c codegen.c main.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+json_to_js$(EXE_EXT): json_to_js.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+cli_visualizer$(EXE_EXT): cli_visualizer.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Generate parser and lexer
+parser.tab.c parser.tab.h: parser.y
+	$(BISON) -d parser.y
+
+lex.yy.c: lexer.l parser.tab.h
+	$(FLEX) lexer.l
+
+clean:
+	$(RM) lex.yy.c parser.tab.c parser.tab.h
+	$(RM) dsa_compiler$(EXE_EXT) json_to_js$(EXE_EXT) cli_visualizer$(EXE_EXT)
+	$(RM) output.json visualizer.js
+
+.PHONY: all clean
+\end{lstlisting}
+
+\section{Problems Faced}
+
+\subsection{Lexer and Parser Integration Issues}
+
+\subsubsection{Token Recognition Conflicts}
+
+\textbf{Problem:} Initial implementation had conflicts between identifier recognition and keyword tokenization.
+
+\textbf{Symptoms:}
+\begin{itemize}
+    \item Keywords like \texttt{bubble\_sort} were being tokenized as generic identifiers
+    \item Parser couldn't distinguish between algorithm names and variable names
+    \item Ambiguous grammar rules causing shift/reduce conflicts
+\end{itemize}
+
+\textbf{Solution:} Implemented explicit keyword tokenization in the lexer:
+
+\begin{lstlisting}[language=C, caption=Keyword Tokenization Fix]
+/* Before - Generic approach */
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.str = strdup(yytext); return ID; }
+
+/* After - Explicit keywords first */
+"bubble_sort"     { return BUBBLE_SORT; }
+"insertion_sort"  { return INSERTION_SORT; }
+"selection_sort"  { return SELECTION_SORT; }
+"merge_sort"      { return MERGE_SORT; }
+"quick_sort"      { return QUICK_SORT; }
+"stack"           { return STACK; }
+"queue"           { return QUEUE; }
+"tree"            { return TREE; }
+"graph"           { return GRAPH; }
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.str = strdup(yytext); return ID; }
+\end{lstlisting}
+
+\subsubsection{Line Number Tracking}
+
+\textbf{Problem:} Error messages lacked line number information, making debugging difficult.
+
+\textbf{Solution:} Implemented comprehensive line and column tracking:
+
+\begin{lstlisting}[language=C, caption=Line Tracking Implementation]
+%option yylineno
+
+%{
+extern int yylineno;
+int column = 1;
+
+void update_column() {
+    column += yyleng;
+}
+%}
+
+%%
+\n          { column = 1; }
+[ \t]+      { update_column(); }
+.           { update_column(); return yytext[0]; }
+\end{lstlisting}
+
+\subsection{Memory Management Challenges}
+
+\subsubsection{AST Node Memory Leaks}
+
+\textbf{Problem:} Dynamic AST construction led to memory leaks during error conditions.
+
+\textbf{Symptoms:}
+\begin{itemize}
+    \item Memory usage growing during compilation
+    \item Valgrind reporting definite leaks
+    \item Crashes on large input files
+\end{itemize}
+
+\textbf{Solution:} Implemented proper memory management with cleanup functions:
+
+\begin{lstlisting}[language=C, caption=AST Memory Management]
+void freeASTNode(ASTNode* node) {
+    if (node == NULL) return;
+    
+    switch (node->type) {
+        case NODE_ARRAY_DECL:
+            free(node->data.array_decl.name);
+            freeASTNode(node->data.array_decl.values);
+            break;
+            
+        case NODE_ALGORITHM_CALL:
+            free(node->data.algorithm_call.algorithm);
+            free(node->data.algorithm_call.array_name);
+            break;
+            
+        case NODE_METHOD_CALL:
+            free(node->data.method_call.object);
+            free(node->data.method_call.method);
+            freeASTNode(node->data.method_call.args);
+            break;
+            
+        case NODE_STATEMENT_LIST:
+            freeASTNode(node->next);
+            break;
+    }
+    
+    free(node);
+}
+
+// Cleanup on exit
+void cleanup() {
+    freeASTNode(root);
+    freeIRList();
+}
+\end{lstlisting}
+
+\subsection{Cross-Platform Compatibility Issues}
+
+\subsubsection{Windows Build Problems}
+
+\textbf{Problem:} Initial development on Linux caused Windows compatibility issues.
+
+\textbf{Symptoms:}
+\begin{itemize}
+    \item \texttt{-lfl} linker errors on Windows
+    \item Different Flex/Bison executable names
+    \item Path separator issues
+    \item Missing \texttt{yywrap} function
+\end{itemize}
+
+\textbf{Solution:} Implemented cross-platform build system:
+
+\begin{lstlisting}[language=C, caption=Windows Compatibility Fix]
+/* In lexer.l - Provide yywrap stub for Windows */
+#ifdef _WIN32
+int yywrap(void) {
+    return 1;
+}
+#endif
+
+/* In Makefile - Platform detection */
+ifeq ($(OS),Windows_NT)
+    FLEX = win_flex
+    BISON = win_bison
+    EXE_EXT = .exe
+    LDFLAGS = 
+else
+    FLEX = flex
+    BISON = bison
+    EXE_EXT =
+    LDFLAGS = -lfl
+endif
+\end{lstlisting}
+
+\subsection{Algorithm Visualization Accuracy}
+
+\subsubsection{Step Generation Synchronization}
+
+\textbf{Problem:} Generated visualization steps didn't accurately reflect actual algorithm execution.
+
+\textbf{Symptoms:}
+\begin{itemize}
+    \item Visualization showed swaps that didn't occur
+    \item Array states inconsistent with algorithm logic
+    \item Missing intermediate steps in complex algorithms
+\end{itemize}
+
+\textbf{Solution:} Implemented faithful algorithm simulation:
+
+\begin{lstlisting}[language=C, caption=Accurate Step Generation]
+void generateBubbleSort(int* arr, int n) {
+    // Create working copy for simulation
+    int* working_array = malloc(n * sizeof(int));
+    memcpy(working_array, arr, n * sizeof(int));
+    
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            // Always generate compare step
+            int indices[2] = {j, j + 1};
+            addIRWithIndices("compare", indices, 2);
+            
+            // Only generate swap if actually needed
+            if (working_array[j] > working_array[j + 1]) {
+                addIRWithIndices("swap", indices, 2);
+                
+                // Perform swap in working array
+                int temp = working_array[j];
+                working_array[j] = working_array[j + 1];
+                working_array[j + 1] = temp;
+            } else {
+                addIRWithIndices("no_swap", indices, 2);
+            }
+        }
+    }
+    
+    free(working_array);
+}
+\end{lstlisting}
+
+\subsection{Error Handling Complexity}
+
+\subsubsection{Multi-Phase Error Coordination}
+
+\textbf{Problem:} Errors in different compiler phases needed consistent handling and reporting.
+
+\textbf{Challenges:}
+\begin{itemize}
+    \item Different error types (lexical, syntax, semantic)
+    \item Inconsistent error message formats
+    \item No error recovery mechanisms
+    \item Difficulty in providing helpful suggestions
+\end{itemize}
+
+\textbf{Solution:} Implemented unified error handling system:
+
+\begin{lstlisting}[language=C, caption=Unified Error Handling]
+typedef enum {
+    ERROR_LEXICAL,
+    ERROR_SYNTAX,
+    ERROR_SEMANTIC,
+    ERROR_GENERATION
+} ErrorType;
+
+typedef struct {
+    ErrorType type;
+    int line_number;
+    int column;
+    char* message;
+    char* suggestion;
+} CompilerError;
+
+void reportError(ErrorType type, int line, int column, 
+                 const char* message, const char* suggestion) {
+    
+    const char* error_names[] = {
+        "Lexical Error", "Syntax Error", 
+        "Semantic Error", "Generation Error"
+    };
+    
+    fprintf(stderr, "%s", error_names[type]);
+    
+    if (line > 0) {
+        fprintf(stderr, " at line %d", line);
+        if (column > 0) {
+            fprintf(stderr, ", column %d", column);
+        }
+    }
+    
+    fprintf(stderr, ": %s\n", message);
+    
+    if (suggestion) {
+        fprintf(stderr, "  %s\n", suggestion);
+    }
+    
+    exit(1);
+}
+\end{lstlisting}
+
+\subsection{Performance and Scalability Issues}
+
+\subsubsection{Large Array Handling}
+
+\textbf{Problem:} Performance degradation with large input arrays.
+
+\textbf{Symptoms:}
+\begin{itemize}
+    \item Exponential time complexity for O(n²) algorithms with large n
+    \item Memory usage growing quadratically
+    \item JSON output becoming unwieldy
+\end{itemize}
+
+\textbf{Solution:} Implemented optimization strategies:
+
+\begin{lstlisting}[language=C, caption=Performance Optimizations]
+#define MAX_ARRAY_SIZE 100
+#define MAX_STEPS 10000
+
+int step_count = 0;
+
+void addIRWithIndices(const char* action, int* indices, int count) {
+    if (step_count >= MAX_STEPS) {
+        fprintf(stderr, "Warning: Maximum step count reached. ");
+        fprintf(stderr, "Truncating visualization.\n");
+        return;
+    }
+    
+    // Add step to IR
+    IRNode* node = createIRNode(action, indices, count);
+    addToIRList(node);
+    step_count++;
+}
+
+// Array size validation
+int validateArraySize(int size) {
+    if (size > MAX_ARRAY_SIZE) {
+        fprintf(stderr, "Error: Array size %d exceeds maximum %d\n", 
+                size, MAX_ARRAY_SIZE);
+        return 0;
+    }
+    return 1;
+}
+\end{lstlisting}
+
+\subsection{JSON Generation and Parsing Issues}
+
+\subsubsection{JSON Format Consistency}
+
+\textbf{Problem:} Inconsistent JSON output format between different algorithm types.
+
+\textbf{Solution:} Standardized JSON schema:
+
+\begin{lstlisting}[language=C, caption=Standardized JSON Output]
+void writeJSONOutput(const char* filename) {
+    FILE* file = fopen(filename, "w");
+    if (!file) {
+        fprintf(stderr, "Error: Cannot write to %s\n", filename);
+        return;
+    }
+    
+    fprintf(file, "{\n");
+    fprintf(file, "  \"algorithm\": \"%s\",\n", current_algorithm);
+    fprintf(file, "  \"array\": [");
+    
+    // Write array
+    for (int i = 0; i < array_size; i++) {
+        fprintf(file, "%d", initial_array[i]);
+        if (i < array_size - 1) fprintf(file, ", ");
+    }
+    
+    fprintf(file, "],\n");
+    fprintf(file, "  \"steps\": [\n");
+    
+    // Write steps
+    IRNode* current = ir_head;
+    while (current) {
+        fprintf(file, "    {\n");
+        fprintf(file, "      \"action\": \"%s\"", current->action);
+        
+        if (current->index_count > 0) {
+            fprintf(file, ",\n      \"indices\": [");
+            for (int i = 0; i < current->index_count; i++) {
+                fprintf(file, "%d", current->indices[i]);
+                if (i < current->index_count - 1) fprintf(file, ", ");
+            }
+            fprintf(file, "]");
+        }
+        
+        fprintf(file, "\n    }");
+        if (current->next) fprintf(file, ",");
+        fprintf(file, "\n");
+        
+        current = current->next;
+    }
+    
+    fprintf(file, "  ],\n");
+    fprintf(file, "  \"metadata\": {\n");
+    fprintf(file, "    \"totalSteps\": %d,\n", step_count);
+    fprintf(file, "    \"arraySize\": %d\n", array_size);
+    fprintf(file, "  }\n");
+    fprintf(file, "}\n");
+    
+    fclose(file);
+}
+\end{lstlisting}
+
+These challenges provided valuable learning experiences in compiler construction, system design, and software engineering best practices. Each problem required careful analysis, research into existing solutions, and implementation of robust fixes that improved the overall system quality.
+
+\section{Team Collaboration and Integration}
+
+The success of the DSA Visualizer Compiler project was achieved through effective collaboration and integration of individual contributions:
+
+\subsection{Integration Methodology}
+
+\textbf{Component Integration:}
+\begin{itemize}
+    \item \textbf{Lexer-Parser Integration:} Seamless token flow from Akhil's lexer to Sohan's parser
+    \item \textbf{Algorithm Integration:} Smooth connection between Akhil's algorithm implementations and Revanth's code generation
+    \item \textbf{AST-IR Pipeline:} Effective transition from Sohan's AST construction to Revanth's IR generation
+    \item \textbf{Visualization Integration:} Coordinated utilization of Revanth's IR by Shanmukh's CLI and JavaScript systems
+\end{itemize}
+
+\textbf{Quality Assurance:}
+\begin{itemize}
+    \item Cross-validation of components by different team members
+    \item Comprehensive testing of integrated system functionality
+    \item Consistent coding standards and documentation across all modules
+    \item Regular integration testing and bug fixing sessions
+\end{itemize}
+
+\subsection{Collaborative Achievements}
+
+\textbf{Technical Synergy:}
+\begin{itemize}
+    \item \textbf{Unified Error Handling:} Consistent error reporting across all compiler phases
+    \item \textbf{Performance Optimization:} Coordinated optimization efforts for algorithm visualization
+    \item \textbf{Cross-Platform Compatibility:} Joint effort to ensure Windows, Linux, and macOS support
+    \item \textbf{Documentation Standards:} Comprehensive documentation maintained by all team members
+\end{itemize}
+
+\textbf{Feature Completeness:}
+\begin{itemize}
+    \item Complete coverage of 5 sorting algorithms with accurate step-by-step visualization
+    \item Full implementation of 4 data structures with comprehensive operation support
+    \item Multi-format output generation (JSON, CLI, JavaScript) working seamlessly together
+    \item Professional-grade error handling and user feedback across all components
+\end{itemize}
+
+\section{Conclusion}
+
+The DSA Visualizer Compiler project successfully demonstrates the complete implementation of a domain-specific language compiler with practical applications in computer science education. The collaborative effort of Team 09 resulted in a system that effectively bridges the gap between abstract algorithmic concepts and interactive visualization, providing multiple output formats to serve different learning contexts.
+
+\subsection{Key Achievements}
+
+\textbf{Individual Contributions Integration:}
+\begin{itemize}
+    \item \textbf{Akhil's Lexical \& Algorithm Foundation} - Robust tokenization and core algorithm implementations enabling accurate parsing and execution
+    \item \textbf{Sohan's Grammar \& AST Framework} - Comprehensive syntax rules and AST construction supporting all language operations
+    \item \textbf{Revanth's Code Generation \& IR} - Accurate AST-to-IR translation and intermediate representation preserving algorithm semantics
+    \item \textbf{Shanmukh's Visualization \& JS Generation} - Context-aware CLI display system and JavaScript conversion for web-based visualization
+\end{itemize}
+
+\textbf{Collective Achievements:}
+\begin{itemize}
+    \item \textbf{Complete Compiler Implementation} - Full pipeline from lexical analysis to code generation
+    \item \textbf{Comprehensive Algorithm Support} - Five sorting algorithms with accurate step-by-step visualization
+    \item \textbf{Multi-Data Structure Support} - Stack, Queue, Binary Tree, and Graph operations
+    \item \textbf{Cross-Platform Compatibility} - Works on Windows, Linux, and macOS
+    \item \textbf{Multi-Output Format} - JSON IR, CLI visualization, and JavaScript generation
+    \item \textbf{Robust Error Handling} - Professional-grade error detection and reporting
+    \item \textbf{Educational Value} - Serves both algorithm learning and compiler construction education
+\end{itemize}
+
+\subsection{Technical Contributions}
+
+The project makes several technical contributions to the field of educational software and compiler construction:
+
+\begin{enumerate}
+    \item \textbf{DSL Design for Algorithm Visualization} - A clean, intuitive syntax for describing algorithmic operations
+    \item \textbf{Multi-Phase Error Handling} - Comprehensive error detection across all compilation phases
+    \item \textbf{Context-Aware Visualization} - Adaptive output based on algorithm and data structure types
+    \item \textbf{Cross-Platform Build System} - Unified development environment across operating systems
+\end{enumerate}
+
+\subsection{Future Enhancements}
+
+The foundation established by this project enables numerous future enhancements:
+
+\begin{itemize}
+    \item \textbf{Extended Algorithm Library} - Advanced algorithms (Dijkstra's, A*, dynamic programming)
+    \item \textbf{Interactive Debugging} - Step-through debugging with breakpoints
+    \item \textbf{Performance Analysis} - Automatic complexity analysis and benchmarking
+    \item \textbf{Web Interface} - Browser-based IDE for the DSL
+    \item \textbf{Animation Controls} - Speed adjustment and replay functionality
+    \item \textbf{Custom Data Types} - Support for strings, floating-point numbers, and custom structures
+\end{itemize}
+
+The DSA Visualizer Compiler represents a successful integration of compiler theory with practical educational applications, demonstrating both effective team collaboration and technical excellence. Each team member's specialized contributions combined to create a comprehensive system that significantly enhances the learning experience in computer science education.
+
+\textbf{Team 09's collaborative approach} - with Akhil's lexical expertise, Sohan's grammar design, Revanth's code generation skills, and Shanmukh's visualization capabilities - resulted in a professional-grade compiler that serves as both an educational tool and a demonstration of effective software engineering practices.
+
+\end{document}

@@ -1,0 +1,30 @@
+# Generated parser/lexer
+parser.tab.c
+parser.tab.h
+lex.yy.c
+
+# Build outputs
+dsa_compiler
+dsa_compiler.exe
+json_to_js
+json_to_js.exe
+cli_visualizer
+cli_visualizer.exe
+cli_viz.exe
+*.o
+*.obj
+
+# Compiler output (root)
+output.json
+visualizer.js
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Test actuals (optional; keep if you want to track)
+# tests/actual/
