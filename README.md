@@ -1,156 +1,174 @@
-# DSA Visualizer Compiler (Lex/Yacc + C)
+# DSA Visualizer Compiler
 
-Compiles a small DSL for Data Structures and Algorithms into:
+**Lex/Yacc + C** — Compiles a small DSL for Data Structures and Algorithms into:
 
-- **JSON IR** – step-by-step visualization data
-- **CLI visualizer** – terminal playback (sorting + DS: Stack, Queue, Tree, Graph)
-- **JavaScript** – optional output for Algorithm Visualizer
+| Output | Description |
+|--------|-------------|
+| **JSON IR** | Step-by-step visualization data |
+| **CLI visualizer** | Terminal playback (sorting + Stack, Queue, Tree, Graph) |
+| **JavaScript** | Optional output for Algorithm Visualizer |
 
 ---
 
 ## Quick Start
 
-**Build** (needs `flex`, `bison`, `gcc`)
+### Build
+
+Requires: `flex`, `bison`, `gcc`
 
 ```bash
 make
+```
 
-Windows: from project root run .\scripts\run.ps1, or generate parser/lexer then:
+**Windows:** From project root run `.\scripts\run.ps1`, or after generating parser/lexer:
 
+```powershell
 gcc -std=c11 -Wall -Wextra -Werror -Isrc -o dsa_compiler parser.tab.c lex.yy.c src/ast.c src/ir.c src/codegen.c src/main.c -lfl
 gcc -std=c11 -Wall -Wextra -o json_to_js src/json_to_js.c
 gcc -std=c11 -Wall -Wextra -o cli_visualizer.exe src/cli_visualizer.c
+```
 
-Run
+### Run
 
-./dsa_compiler tests/examples/test.algo
+```bash
+./dsa_compiler tests/examples/test.algo    # → output.json
 ./cli_visualizer output.json
-./json_to_js output.json visualizer.js
+./json_to_js output.json visualizer.js    # optional: JS for web visualizer
+```
 
-Windows:
+**Windows:**
 
+```powershell
 .\dsa_compiler.exe tests\examples\test.algo
 .\cli_visualizer.exe output.json
+```
 
-Features
+---
 
-    Sorting: Bubble, Insertion, Selection, Merge, Quick
+## Features
 
-    Data structures: Stack, Queue, BST (insert + traversals), Graph (nodes, edges, BFS/DFS)
+- **Sorting:** Bubble, Insertion, Selection, Merge, Quick
+- **Data structures:** Stack, Queue, BST (insert + traversals), Graph (nodes, edges, BFS/DFS)
+- **Pipeline:** Lex → Parse (AST) → IR → JSON; CLI and optional JS output
+- **Error handling:** Lexical, syntax, semantic with line info
 
-    Pipeline: Lex → Parse (AST) → IR → JSON; CLI and optional JS output
+---
 
-    Error handling: lexical, syntax, semantic with line info
+## Repo Layout
 
-Repo Layout
-Path	Contents
-src/	lexer.l, parser.y, ast.c/h, ir.c/h, codegen.c/h, main.c, cli_visualizer.c, json_to_js.c
-docs/	LANGUAGE_REFERENCE.md, project_report.tex, guide/
-tests/	inputs/, expected/, examples/
-scripts/	run.ps1
-web/	visualizer.js
-DSL Snippets
+| Path | Contents |
+|------|----------|
+| `src/` | `lexer.l`, `parser.y`, `ast.c/h`, `ir.c/h`, `codegen.c/h`, `main.c`, `cli_visualizer.c`, `json_to_js.c` |
+| `docs/` | `LANGUAGE_REFERENCE.md`, `project_report.tex`, `guide/` (how-tos) |
+| `tests/` | `inputs/`, `expected/` (tests), `examples/` (sample `.algo`) |
+| `scripts/` | `run.ps1` (Windows build + test) |
+| `web/` | `visualizer.js` |
 
-Arrays & sorting
+---
 
+## DSL Snippets
+
+**Arrays & sorting**
+
+```text
 arr[] = [5,3,8,4,2];
-bubble_sort(arr);
-insertion_sort(arr);
-merge_sort(arr);
-quick_sort(arr);
+bubble_sort(arr);   insertion_sort(arr);   merge_sort(arr);   quick_sort(arr);
+```
 
-Stack / Queue
+**Stack / Queue**
 
-stack.push(10);
-stack.pop();
-stack.peek();
+```text
+stack.push(10); stack.pop(); stack.peek();
+queue.enqueue(10); queue.dequeue();
+```
 
-queue.enqueue(10);
-queue.dequeue();
+**BST**
 
-BST
+```text
+tree.insert(5); tree.insert(3);
+tree.traverse_inorder(); tree.traverse_preorder(); tree.traverse_postorder();
+```
 
-tree.insert(5);
-tree.insert(3);
-tree.traverse_inorder();
-tree.traverse_preorder();
-tree.traverse_postorder();
+**Graph**
 
-Graph
+```text
+graph.add_node(1); graph.add_edge(1, 2); graph.bfs(1); graph.dfs(1);
+```
 
-graph.add_node(1);
-graph.add_edge(1, 2);
-graph.bfs(1);
-graph.dfs(1);
+> Full reference: `docs/guide/DATA_STRUCTURES_GUIDE.md`, `docs/LANGUAGE_REFERENCE.md`
 
-Full reference:
-docs/guide/DATA_STRUCTURES_GUIDE.md
-docs/LANGUAGE_REFERENCE.md
-Pipeline
+---
 
-    Lex (lexer.l) → tokens
+## Pipeline
 
-    Parse (parser.y) → AST (ast.h)
+1. **Lex** (`lexer.l`) → tokens
+2. **Parse** (`parser.y`) → AST (`ast.h`)
+3. **Semantic** (`codegen.c`) → validate algorithms/DS ops
+4. **IR** (`codegen.c` → `ir.c`) → step list → `output.json`
+5. **Visualize:** CLI reads `output.json`; `json_to_js` produces JS for Algorithm Visualizer
 
-    Semantic (codegen.c) → validation
+---
 
-    IR (codegen.c → ir.c) → output.json
+## IR JSON (sketch)
 
-    Visualize → CLI + JS generator
-
-IR JSON (sketch)
-
+```json
 {
-  "algorithm": "Bubble Sort",
-  "array": [],
+  "algorithm": "Bubble Sort | Stack Operations | ...",
+  "array": [ ... ],
   "steps": [
     { "action": "compare", "indices": [0, 1] },
     { "action": "swap", "indices": [0, 1] },
-    { "action": "push", "indices": [0, 10] },
-    { "action": "insert", "indices": [5, -1, 0, 0] }
+    { "action": "push", "indices": [pos, val] },
+    { "action": "insert", "indices": [value, parentValue, isLeft, meta] }
   ]
 }
+```
 
-CLI Visualizer
+---
 
-Reads output.json and shows:
+## CLI Visualizer
 
-    Sorting steps and array state
+Reads `output.json` and shows:
 
-    Stack operations
+| Type | Shown |
+|------|--------|
+| **Sorting** | Comparisons, swaps, passes, array state |
+| **Stack** | Pushes/pops, top, size |
+| **Queue** | Enqueue/dequeue, front, rear, size |
+| **Tree** | Inserts, traversal visits, root, height |
+| **Graph** | Nodes, edges, BFS/DFS |
 
-    Queue operations
+DS views use DS-specific wording (no “sorted array” / “comparisons” for non-sorting).
 
-    Tree inserts and traversals
+---
 
-    Graph nodes, edges, BFS/DFS
+## Extending
 
-Extending
+1. **New syntax:** Update `parser.y`, add tokens in `lexer.l` if needed.
+2. **New IR steps:** In `codegen.c` use `addIR` / `addIRWithIndices`.
+3. **CLI:** Handle new `action` types in `cli_visualizer.c`.
+4. **JS:** Extend `json_to_js.c` for new tracer calls.
 
-    Update parser.y
+---
 
-    Update lexer.l
+## Testing
 
-    Add IR mapping in codegen.c
+- Add `.algo` files under `tests/inputs/`.
+- Run the compiler and compare `output.json` to `tests/expected/<name>.json`.
+- **Windows:** `.\scripts\run.ps1` to build and run tests.
 
-    Update cli_visualizer.c
+---
 
-    Update json_to_js.c
+## Troubleshooting
 
-Testing
+| Issue | Fix |
+|-------|-----|
+| `cli_visualizer.exe` not found | `gcc -std=c11 -Wall -Wextra -o cli_visualizer.exe src/cli_visualizer.c` then `.\cli_visualizer.exe output.json` from project root |
+| `-lfl` link error (Windows) | Omit `-lfl`; `lexer.l` already defines `yywrap` |
+| Bad colors/box-drawing | Use Windows 10+ or enable ANSI in terminal |
 
-Add .algo files to tests/inputs/, compile, and compare with tests/expected.
+---
 
-Windows helper:
-
-.\scripts\run.ps1
-
-Troubleshooting
-Issue	Fix
-cli_visualizer not found	Build it manually
--lfl error (Windows)	Remove -lfl
-Terminal colors broken	Enable ANSI / use Windows 10+
-License
+## License
 
 Educational use.
-
